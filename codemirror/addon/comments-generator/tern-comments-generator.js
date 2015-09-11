@@ -48,23 +48,15 @@
       if (error) {
         //updateComments(state, {});
       } else {
-        var comments = response;
-        updateComments(cm, comments);
+        updateComments(cm, response);
       }
     });
   }
   
-  function updateComments(cm, comments) {
-    if (comments && comments.comments) {
-      //alert(comments.comments)
-      cm.replaceRange(comments.comments, cm.getCursor(), cm.getCursor())
+  function updateComments(cm, data) {
+    if (data && data.comments) {
+      cm.replaceRange(data.comments, data.start, data.start);
     }
-//    var content = JSON.stringify(comments, null, ' ');
-//    if (state.options.node.value) {
-//      state.options.node.value = content 
-//    } else {
-//      state.options.node.innerHTML = content;
-//    }
   }
   
   function onChange(cm) {
