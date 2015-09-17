@@ -1,13 +1,13 @@
 {
-  "name": "tern-outline",
+  "name": "tern-comments-generator",
   "license": "MIT",
-  "version": "0.2.0",
-  "main": "outline.js",
+  "version": "0.1.0",
+  "main": "comments-generator.js",
   "author": "Angelo ZERR <angelo.zerr@gmail.com>",
-  "description": "A Tern plugin for outline.",
+  "description": "A Tern plugin to generate JSDoc.",
   "repository": {
     "type": "git",
-    "url": "git://github.com/angelozerr/tern-outline.git"
+    "url": "git://github.com/angelozerr/tern-comments-generator.git"
   },
   "scripts": {
     "test": "node ./test/all.js"

@@ -19,25 +19,32 @@
     return options;
   }
   
-  function comments(cm) {
-    //var state = cm.state.Comments;
-    //if (!state) return;
+  function comments(cm, startsWithComment) {
     var server = CodeMirror.tern.getServer(cm);
     if (!server) return;
+    var text, end = cm.getCursor()
+    if (startsWithComment) {
+      var token = cm.getTokenAt(end);
+      if (!(token && token.type == "comment")) return CodeMirror.Pass;
+      text = cm.getRange(CodeMirror.Pos(cm.firstLine()), CodeMirror.Pos(end.line, end.ch - "/**".length));
+      text += "   ";
+      text += cm.getRange(end, CodeMirror.Pos(cm.lastLine()));
+    } else {
+      text = cm.getValue();
+    }
     
-
     var query = {
       type : "comments",
       file : "#0",
       lineCharPositions : true,
-      end: cm.getCursor()
+      end: end
     };
     
     var files = [];
     files.push({
       type : "full",
       name : "[doc]",
-      text : cm.getValue()
+      text : text
     });
 
     var doc = {
@@ -48,14 +55,17 @@
       if (error) {
         //updateComments(state, {});
       } else {
-        updateComments(cm, response);
+        updateComments(cm, response, startsWithComment);
       }
     });
+    if (!startsWithComment) return CodeMirror.Pass 
   }
   
-  function updateComments(cm, data) {
+  function updateComments(cm, data, startsWithComment) {
     if (data && data.comments) {
-      cm.replaceRange(data.comments, data.start, data.start);
+      var comments = data.comments, start = data.start, end = data.start;
+      if (startsWithComment) comments = comments.substring("/**".length, comments.length);
+      cm.replaceRange(comments, start, end);
     }
   }
   

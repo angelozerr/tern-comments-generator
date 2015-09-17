@@ -52,7 +52,7 @@
     if (fnType.retval) {
       c += "\n";
       c += "\t";
-      c+= "@return ";
+      c+= "@returns ";
       var t = getTypeName(fnType.retval);
       if (t) {
         c+= "{";
@@ -79,9 +79,21 @@
       return s == "" ? null : s; 
     }
     if (type.name) {
-      return type.name;
+      return toJSDocType(type.name);
     }
-    return (type.proto) ? type.proto.name : null;
+    return (type.proto) ? toJSDocType(type.proto.name) : null;
+  }
+  
+  function toJSDocType(ternType) {
+    switch(ternType) {
+      case "string":
+        return "String";
+      case "number":
+        return "Number";
+      case "bool":
+        return "Boolean";        
+    }
+    return ternType;
   }
   
 })  
